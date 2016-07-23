@@ -15,6 +15,7 @@ use Yii;
  * @property integer $emirates_id
  *
  * @property Shops[] $shops
+ * @property Emirates $emirates
  */
 class Stores extends \yii\db\ActiveRecord
 {
@@ -32,9 +33,10 @@ class Stores extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address_line_1',  'city', 'emirates_id'], 'required'],
+            [['name', 'address_line_1', 'address_line_2', 'city', 'emirates_id'], 'required'],
             [['emirates_id'], 'integer'],
             [['name', 'address_line_1', 'address_line_2', 'city'], 'string', 'max' => 20],
+            [['emirates_id'], 'exist', 'skipOnError' => true, 'targetClass' => Emirates::className(), 'targetAttribute' => ['emirates_id' => 'id']],
         ];
     }
 
@@ -59,5 +61,13 @@ class Stores extends \yii\db\ActiveRecord
     public function getShops()
     {
         return $this->hasMany(Shops::className(), ['store_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmirates()
+    {
+        return $this->hasOne(Emirates::className(), ['id' => 'emirates_id']);
     }
 }

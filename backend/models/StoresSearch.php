@@ -66,7 +66,7 @@ class StoresSearch extends Stores
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'address_line_1', $this->address_line_1])
             ->andFilterWhere(['like', 'address_line_2', $this->address_line_2])
-            ->andFilterWhere(['like', 'city', $this->city]);
+            ->andFilterWhere(['like', 'emirates_id', $this->emirates_id]);
 
         return $dataProvider;
     }

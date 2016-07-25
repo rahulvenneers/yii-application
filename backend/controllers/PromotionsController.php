@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Emirates;
-use backend\models\EmirartesSearch;
+use backend\models\Promotions;
+use backend\models\PromotionsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * EmiratesController implements the CRUD actions for Emirates model.
+ * PromotionsController implements the CRUD actions for Promotions model.
  */
-class EmiratesController extends Controller
+class PromotionsController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class EmiratesController extends Controller
     }
 
     /**
-     * Lists all Emirates models.
+     * Lists all Promotions models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new EmirartesSearch();
+        $searchModel = new PromotionsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,30 +45,35 @@ class EmiratesController extends Controller
     }
 
     /**
-     * Displays a single Emirates model.
+     * Displays a single Promotions model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-       $model = $this->findModel($id);
-       $stores=$model->stores;
         return $this->render('view', [
-            'model' => $model,'stores'=> $stores
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Emirates model.
+     * Creates a new Promotions model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Emirates();
+        $model = new Promotions();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            
+           $imageName=$model->promotion_code;
+           $model->letter = UploadedFile::getInstance($model, 'letter'); 
+           $model->permission_letter='uploads/promotions/'.$imageName.'.'.$model->image->extension;
+           if($model->save()){ 
+               $model->image->saveAs('uploads/promotions/'.$imageName.'.'.$model->image->extension);
+               return $this->redirect(['view', 'id' => $model->id]);
+           }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -77,7 +82,7 @@ class EmiratesController extends Controller
     }
 
     /**
-     * Updates an existing Emirates model.
+     * Updates an existing Promotions model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +101,7 @@ class EmiratesController extends Controller
     }
 
     /**
-     * Deletes an existing Emirates model.
+     * Deletes an existing Promotions model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +114,15 @@ class EmiratesController extends Controller
     }
 
     /**
-     * Finds the Emirates model based on its primary key value.
+     * Finds the Promotions model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Emirates the loaded model
+     * @return Promotions the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Emirates::findOne($id)) !== null) {
+        if (($model = Promotions::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

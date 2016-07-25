@@ -28,13 +28,38 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'name',
             'address_line_1',
             'address_line_2',
             'city',
-            'emirates_id',
+            //'emirates_id',
         ],
     ]) ?>
-
+    <style>
+        .brands{
+            text-align: center;
+        }
+        .brands a{
+            color:#FFF;
+        }
+        .Smart.Baby{
+            background-color:#0D7CA3;    
+        }
+        .x-pression{
+            background-color:#6D377E;
+        }
+        .SHOES4US{
+            background-color:#7B7B7B;
+        }
+        
+    </style>
+ <div class="row brands">   
+    <?php foreach($shops as $shop){?>
+        <div class="col-md-2 <?=$shop->brand->name?>"> 
+                 <?=Html::img($shop->brand->logo)?><br>
+                 <?= Html::a($shop->brand->name, ['shops/view', 'id' => $shop->id])."<br>"?>
+        </div>
+<?php }?>
+    </div>
 </div>

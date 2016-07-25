@@ -3,15 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-
 /* @var $this yii\web\View */
-/* @var $model app\models\Emirates */
+/* @var $model backend\models\Promotions */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Emirates', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Promotions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="emirates-view">
+<div class="promotions-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,20 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            //'id',
+            'id',
+            'promotion_code',
             'name',
-            //'status',
-            
+            'discription:ntext',
+            'start_date',
+            'end_date',
+            'emirates_id',
+            'store_id',
+            'permission_letter',
+            'status',
         ],
     ]) ?>
-    
 
-    
-    <div class="row">   
-    <?php foreach($stores as $store){?>
-        <div class="col-md-12"> 
-                 <?= Html::a($store->name, ['stores/view', 'id' => $store->id])."<br>"?>
-        </div>
-<?php }?>
-    </div>
 </div>

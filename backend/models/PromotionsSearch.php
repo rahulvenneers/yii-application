@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Stores;
+use backend\models\Promotions;
 
 /**
- * StoresSearch represents the model behind the search form about `backend\models\Stores`.
+ * PromotionsSearch represents the model behind the search form about `backend\models\Promotions`.
  */
-class StoresSearch extends Stores
+class PromotionsSearch extends Promotions
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class StoresSearch extends Stores
     public function rules()
     {
         return [
-            [['id' ], 'integer'],
-            [['name', 'address_line_1', 'address_line_2', 'city','emirates_id'], 'safe'],
+            [['id', 'emirates_id', 'store_id', 'status'], 'integer'],
+            [['promotion_code', 'name', 'discription', 'start_date', 'end_date', 'permission_letter'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class StoresSearch extends Stores
      */
     public function search($params)
     {
-        $query = Stores::find();
+        $query = Promotions::find();
 
         // add conditions that should always apply here
 
@@ -56,17 +56,21 @@ class StoresSearch extends Stores
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->joinWith('emirates');
+
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'emirates_id' => $this->emirates_id,
+            'store_id' => $this->store_id,
+            'status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'address_line_1', $this->address_line_1])
-            ->andFilterWhere(['like', 'address_line_2', $this->address_line_2])
-            ->andFilterWhere(['like', 'emirates.name', $this->emirates_id]);
+        $query->andFilterWhere(['like', 'promotion_code', $this->promotion_code])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'discription', $this->discription])
+            ->andFilterWhere(['like', 'permission_letter', $this->permission_letter]);
 
         return $dataProvider;
     }

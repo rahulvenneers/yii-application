@@ -51,8 +51,10 @@ class StoresController extends Controller
      */
     public function actionView($id)
     {
+        $model= $this->findModel($id);
+        $shops= $model->shops;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'=>$model,'shops'=>$shops
         ]);
     }
 
@@ -113,6 +115,22 @@ class StoresController extends Controller
      * @return Stores the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
+    public function actionList($id){
+        $countStores=  Stores::find()
+                ->where(['emirates_id'=>$id])
+                ->count();
+        $stores=Stores::find()
+                ->where(['emirates_id'=>$id])
+                ->all();
+        if($countStores>0){
+            foreach ($stores as $store){
+                echo "<option value='".$store->id."'>".$store->name."</option>";
+            }
+        }
+        else{
+            echo "<option>-</option>";
+        }
+    }
     protected function findModel($id)
     {
         if (($model = Stores::findOne($id)) !== null) {
